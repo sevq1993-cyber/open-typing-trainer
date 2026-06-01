@@ -18,7 +18,7 @@ export function HeaderActions({ children }: HeaderActionsProps) {
           <img src={dashboardData.user.avatarUrl} alt="" />
         ) : (
           <span aria-hidden="true">
-            <User size={22} />
+            <User size={19} />
           </span>
         )}
       </button>

@@ -1,28 +1,33 @@
 import { LogOut, Pause, Play } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { HeaderActions } from "../layout/HeaderActions";
 import { Button } from "../ui/Button";
 import { routes } from "../../data/dashboard";
-import { activeSession, russianKeyMap, selectedLesson, typingText } from "../../data/lessons";
-import { CurrentSessionCard } from "./CurrentSessionCard";
+import { activeSession, getLessonTypingText, russianKeyMap, type Lesson } from "../../data/lessons";
 import { FinishLessonModal } from "./FinishLessonModal";
 import { RussianKeyboard } from "./RussianKeyboard";
 import { TrainerSidePanel } from "./TrainerSidePanel";
 import { TypingTextCard, type TypedState } from "./TypingTextCard";
 
 type TrainerPageProps = {
+  lesson: Lesson;
   onNavigate: (href: string) => void;
 };
 
-export function TrainerPage({ onNavigate }: TrainerPageProps) {
+export function TrainerPage({ lesson, onNavigate }: TrainerPageProps) {
   const [typedStates, setTypedStates] = useState<TypedState[]>([]);
   const [runtimeErrors, setRuntimeErrors] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const currentIndexRef = useRef(0);
   const [isPaused, setIsPaused] = useState(false);
   const [finishOpen, setFinishOpen] = useState(false);
   const [pressedKey, setPressedKey] = useState<string | null>(null);
+  const pressTokenRef = useRef(0);
+  const keyFeedbackTimeoutRef = useRef<number | null>(null);
   const [errorKey, setErrorKey] = useState<string | null>(null);
   const [lastWrongIndex, setLastWrongIndex] = useState<number | null>(null);
+  const [hintsEnabled, setHintsEnabled] = useState(activeSession.hints.enabled);
+  const [soundsEnabled, setSoundsEnabled] = useState(activeSession.keyboardSounds.enabled);
   const [keyboardVisible, setKeyboardVisible] = useState(() => {
     if (typeof window === "undefined") {
       return true;
@@ -36,15 +41,27 @@ export function TrainerPage({ onNavigate }: TrainerPageProps) {
     return window.matchMedia("(min-width: 768px)").matches;
   });
 
+  const typingText = getLessonTypingText(lesson);
   const currentChar = typingText[currentIndex] ?? "";
-  const weakKeys = activeSession.weakKeys;
 
   useEffect(() => {
     window.localStorage.setItem("typing.keyboardVisible", String(keyboardVisible));
   }, [keyboardVisible]);
 
+  useEffect(() => {
+    return () => {
+      if (keyFeedbackTimeoutRef.current !== null) {
+        window.clearTimeout(keyFeedbackTimeoutRef.current);
+      }
+    };
+  }, []);
+
   function isRussianLetter(key: string) {
     return /^[а-яё]$/i.test(key);
+  }
+
+  function normalizePunctuation(key: string) {
+    return ["—", "–", "‑", "−"].includes(key) ? "-" : key;
   }
 
   function normalizeInputKey(key: string, code?: string) {
@@ -61,7 +78,7 @@ export function TrainerPage({ onNavigate }: TrainerPageProps) {
     }
 
     if (key.length === 1) {
-      return key.toLocaleLowerCase("ru-RU");
+      return normalizePunctuation(key).toLocaleLowerCase("ru-RU");
     }
 
     return null;
@@ -88,12 +105,14 @@ export function TrainerPage({ onNavigate }: TrainerPageProps) {
   }
 
   function handleCharacter(key: string, code?: string) {
-    if (isPaused || currentIndex >= typingText.length) {
+    const typedIndex = currentIndexRef.current;
+
+    if (isPaused || typedIndex >= typingText.length) {
       return;
     }
 
-    const expected = typingText[currentIndex];
-    const normalizedExpected = expected === " " ? " " : expected.toLocaleLowerCase("ru-RU");
+    const expected = typingText[typedIndex];
+    const normalizedExpected = expected === " " ? " " : normalizePunctuation(expected).toLocaleLowerCase("ru-RU");
     const normalizedKey = normalizeInputKey(key, code);
 
     if (normalizedKey === null) {
@@ -102,39 +121,50 @@ export function TrainerPage({ onNavigate }: TrainerPageProps) {
 
     const correct = normalizedExpected === normalizedKey;
     const displayKey = keyForKeyboard(key, code);
+    const pressToken = pressTokenRef.current + 1;
+    pressTokenRef.current = pressToken;
+    if (keyFeedbackTimeoutRef.current !== null) {
+      window.clearTimeout(keyFeedbackTimeoutRef.current);
+    }
     setPressedKey(displayKey);
 
     if (correct) {
       setTypedStates((states) => {
         const next = [...states];
-        next[currentIndex] = "correct";
+        next[typedIndex] = "correct";
         return next;
       });
-      setCurrentIndex((index) => index + 1);
+      currentIndexRef.current = typedIndex + 1;
+      setCurrentIndex(currentIndexRef.current);
       setLastWrongIndex(null);
       setErrorKey(null);
     } else {
       setTypedStates((states) => {
         const next = [...states];
-        next[currentIndex] = "error";
+        next[typedIndex] = "error";
         return next;
       });
       setRuntimeErrors((count) => count + 1);
-      setLastWrongIndex(currentIndex);
+      setLastWrongIndex(typedIndex);
       setErrorKey(displayKey);
     }
 
-    window.setTimeout(() => {
+    keyFeedbackTimeoutRef.current = window.setTimeout(() => {
+      if (pressTokenRef.current !== pressToken) {
+        return;
+      }
+
       setPressedKey(null);
       setErrorKey(null);
       setLastWrongIndex(null);
+      keyFeedbackTimeoutRef.current = null;
       setTypedStates((states) => {
-        if (states[currentIndex] !== "error") {
+        if (states[typedIndex] !== "error") {
           return states;
         }
 
         const next = [...states];
-        delete next[currentIndex];
+        delete next[typedIndex];
         return next;
       });
     }, 190);
@@ -145,15 +175,14 @@ export function TrainerPage({ onNavigate }: TrainerPageProps) {
       return;
     }
 
-    setCurrentIndex((index) => {
-      const nextIndex = Math.max(0, index - 1);
-      setTypedStates((states) => {
-        const next = [...states];
-        next.splice(nextIndex, 1);
-        return next;
-      });
-      return nextIndex;
+    const nextIndex = Math.max(0, currentIndexRef.current - 1);
+    currentIndexRef.current = nextIndex;
+    setTypedStates((states) => {
+      const next = [...states];
+      next.splice(nextIndex, 1);
+      return next;
     });
+    setCurrentIndex(nextIndex);
   }
 
   return (
@@ -161,16 +190,16 @@ export function TrainerPage({ onNavigate }: TrainerPageProps) {
       <header className="page-header trainer-header">
         <div>
           <div className="breadcrumb">
-            <span>Урок {selectedLesson.id}</span>
+            <span>Урок {lesson.id}</span>
             <span aria-hidden="true">›</span>
-            <strong>{selectedLesson.title}</strong>
+            <strong>{lesson.title}</strong>
           </div>
-          <h1 id="trainer-title">{selectedLesson.subtitle}</h1>
+          <h1 id="trainer-title">{lesson.subtitle}</h1>
         </div>
         <HeaderActions>
           <Button
             variant="secondary"
-            icon={<LogOut size={18} aria-hidden="true" />}
+            icon={<LogOut size={15} aria-hidden="true" />}
             onClick={() => setFinishOpen(true)}
           >
             Завершить урок
@@ -178,13 +207,32 @@ export function TrainerPage({ onNavigate }: TrainerPageProps) {
           <Button
             className="header-pause-button"
             variant="secondary"
-            icon={isPaused ? <Play size={17} aria-hidden="true" /> : <Pause size={17} aria-hidden="true" />}
+            icon={isPaused ? <Play size={14} aria-hidden="true" /> : <Pause size={14} aria-hidden="true" />}
             onClick={() => setIsPaused((value) => !value)}
           >
             {isPaused ? "Продолжить" : "Пауза"}
           </Button>
         </HeaderActions>
       </header>
+
+      <section className="trainer-compact-stats" aria-label="Показатели урока">
+        <span>
+          <small>Скорость</small>
+          <strong>{activeSession.speed} зн/мин</strong>
+        </span>
+        <span>
+          <small>Точность</small>
+          <strong>{activeSession.accuracy}%</strong>
+        </span>
+        <span>
+          <small>Ошибки</small>
+          <strong>{activeSession.errors + runtimeErrors}</strong>
+        </span>
+        <span>
+          <small>Прогресс</small>
+          <strong>{activeSession.progress}%</strong>
+        </span>
+      </section>
 
       <div className="trainer-grid">
         <div className="trainer-main-column">
@@ -198,27 +246,33 @@ export function TrainerPage({ onNavigate }: TrainerPageProps) {
             typedStates={typedStates}
           />
           <RussianKeyboard
-            currentKey={currentChar}
+            currentKey={hintsEnabled ? currentChar : ""}
             disabled={isPaused}
+            enableSound={soundsEnabled}
             errorKey={errorKey}
             isVisible={keyboardVisible}
-            onToggleVisible={() => setKeyboardVisible((value) => !value)}
+            onHide={() => setKeyboardVisible(false)}
+            onShow={() => setKeyboardVisible(true)}
             pressedKey={pressedKey}
-            targetKeys={selectedLesson.targetKeys}
+            targetKeys={hintsEnabled ? lesson.targetKeys : []}
           />
         </div>
 
-        <TrainerSidePanel />
+        <TrainerSidePanel
+          hintsEnabled={hintsEnabled}
+          onHintsEnabledChange={setHintsEnabled}
+          onSoundsEnabledChange={setSoundsEnabled}
+          soundsEnabled={soundsEnabled}
+          targetKeys={lesson.targetKeys}
+        />
       </div>
-
-      <CurrentSessionCard errors={activeSession.errors + runtimeErrors} weakKeys={weakKeys} />
 
       {isPaused ? (
         <div className="pause-floating-note" role="status">
-          <Pause size={18} aria-hidden="true" />
+          <Pause size={15} aria-hidden="true" />
           Урок на паузе
           <button type="button" onClick={() => setIsPaused(false)}>
-            <Play size={16} aria-hidden="true" />
+            <Play size={14} aria-hidden="true" />
             Продолжить
           </button>
         </div>

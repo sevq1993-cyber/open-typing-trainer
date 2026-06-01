@@ -1,6 +1,7 @@
 node_modules/
 dist/
 .vite/
+.codex-backups/
 .DS_Store
 *.local
 *.tsbuildinfo

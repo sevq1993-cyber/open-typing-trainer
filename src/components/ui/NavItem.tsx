@@ -20,7 +20,7 @@ export function NavItem({ item, active, onNavigate }: NavItemProps) {
         onNavigate(item.href);
       }}
     >
-      <Icon size={22} aria-hidden="true" />
+      <Icon size={19} aria-hidden="true" />
       <span className="sidebar-label">{item.label}</span>
     </a>
   );

@@ -52,7 +52,7 @@ export function Sidebar({ activeRoute, onNavigate }: SidebarProps) {
 
       <section className="pro-card" aria-labelledby="pro-card-title">
         <div className="pro-icon" aria-hidden="true">
-          <Crown size={22} />
+          <Crown size={19} />
         </div>
         <h2 id="pro-card-title">Слепая Печать PRO</h2>
         <p>Поддержите развитие приложения и получите доступ к эксклюзивным возможностям.</p>
@@ -63,10 +63,10 @@ export function Sidebar({ activeRoute, onNavigate }: SidebarProps) {
 
       <a className="github-link interactive" href="#github" aria-label="Открыть GitHub проекта">
         <span>
-          <Github size={21} aria-hidden="true" />
+          <Github size={18} aria-hidden="true" />
           <span className="github-label">GitHub</span>
         </span>
-        <ExternalLink className="github-external" size={17} aria-hidden="true" />
+        <ExternalLink className="github-external" size={14} aria-hidden="true" />
       </a>
 
       <span className="app-version">v0.1 prototype</span>

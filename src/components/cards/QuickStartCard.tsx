@@ -24,13 +24,13 @@ export function QuickStartCard() {
           return (
             <button className="action-row interactive" type="button" key={action.type}>
               <span className={`action-icon action-icon-${tone}`} aria-hidden="true">
-                <Icon size={22} />
+                <Icon size={19} />
               </span>
               <span className="action-copy">
                 <strong>{action.title}</strong>
                 <span>{action.description}</span>
               </span>
-              <ChevronRight className="action-chevron" size={20} aria-hidden="true" />
+              <ChevronRight className="action-chevron" size={17} aria-hidden="true" />
             </button>
           );
         })}

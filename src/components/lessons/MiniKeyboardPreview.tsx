@@ -5,8 +5,10 @@ type MiniKeyboardPreviewProps = {
 };
 
 export function MiniKeyboardPreview({ targetKeys }: MiniKeyboardPreviewProps) {
+  const label = targetKeys.length > 0 ? `Клавиатура урока с подсветкой ${targetKeys.join(", ")}` : "Клавиатура урока";
+
   return (
-    <div className="mini-keyboard-preview" aria-label="Клавиатура урока с подсветкой Н и Р">
+    <div className="mini-keyboard-preview" aria-label={label}>
       <div className="mini-keyboard">
         {russianKeyboard.slice(0, 4).map((row, rowIndex) => (
           <div className="mini-keyboard-row" key={rowIndex}>

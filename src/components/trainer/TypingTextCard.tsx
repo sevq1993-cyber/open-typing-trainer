@@ -1,5 +1,5 @@
 import type { CSSProperties, KeyboardEvent } from "react";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 export type TypedState = "correct" | "error";
 
@@ -25,15 +25,34 @@ export function TypingTextCard({
   const cardRef = useRef<HTMLDivElement>(null);
   const charRefs = useRef<Array<HTMLSpanElement | null>>([]);
   const inputRef = useRef<HTMLInputElement>(null);
-  const previousYRef = useRef(0);
   const [focused, setFocused] = useState(false);
-  const [caret, setCaret] = useState({ x: 0, y: 0, moving: false, lineJump: false });
+  const [caret, setCaret] = useState({ x: 0, y: 0 });
+  const textTokens = useMemo(() => {
+    const chars = Array.from(text);
+    const tokens: Array<Array<{ char: string; index: number }>> = [];
+    let currentToken: Array<{ char: string; index: number }> = [];
+
+    chars.forEach((char, index) => {
+      currentToken.push({ char, index });
+
+      if (char === " ") {
+        tokens.push(currentToken);
+        currentToken = [];
+      }
+    });
+
+    if (currentToken.length > 0) {
+      tokens.push(currentToken);
+    }
+
+    return tokens;
+  }, [text]);
 
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
 
-  useLayoutEffect(() => {
+  const updateCaret = useCallback(() => {
     const card = cardRef.current;
     const target = charRefs.current[currentIndex] ?? charRefs.current[text.length - 1];
 
@@ -43,20 +62,30 @@ export function TypingTextCard({
 
     const cardRect = card.getBoundingClientRect();
     const targetRect = target.getBoundingClientRect();
+    const visualScale = card.offsetWidth > 0 ? cardRect.width / card.offsetWidth : 1;
+    const scale = visualScale || 1;
     const isEnd = currentIndex >= text.length;
-    const nextX = (isEnd ? targetRect.right : targetRect.left) - cardRect.left - 2;
-    const nextY = targetRect.top - cardRect.top + 2;
-    const lineJump = Math.abs(nextY - previousYRef.current) > 20 && previousYRef.current !== 0;
+    const nextX = ((isEnd ? targetRect.right : targetRect.left) - cardRect.left) / scale - 1;
+    const nextY = (targetRect.top - cardRect.top) / scale + 1;
 
-    previousYRef.current = nextY;
-    setCaret({ x: nextX, y: nextY, moving: true, lineJump });
+    setCaret({ x: nextX, y: nextY });
+  }, [currentIndex, text.length]);
 
-    const timeout = window.setTimeout(() => {
-      setCaret((value) => ({ ...value, moving: false, lineJump: false }));
-    }, lineJump ? 120 : 150);
-
-    return () => window.clearTimeout(timeout);
+  useLayoutEffect(() => {
+    updateCaret();
   }, [currentIndex, text, typedStates]);
+
+  useEffect(() => {
+    updateCaret();
+    const frameId = window.requestAnimationFrame(updateCaret);
+    const fontsReady = document.fonts?.ready;
+
+    fontsReady?.then(updateCaret).catch(() => undefined);
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+    };
+  }, [updateCaret, typedStates]);
 
   function handleKeyDown(event: KeyboardEvent) {
     if (event.metaKey || event.ctrlKey || event.altKey) {
@@ -108,39 +137,40 @@ export function TypingTextCard({
       />
       <span className="typing-label">Печатайте:</span>
       <p className="typing-text">
-        {Array.from(text).map((char, index) => {
-          const typedState = typedStates[index];
-          const current = index === currentIndex;
-          const space = char === " ";
-          const wrong = lastWrongIndex === index;
+        {textTokens.map((token, tokenIndex) => (
+          <span className="typing-word" key={`${token[0]?.index ?? tokenIndex}-${tokenIndex}`}>
+            {token.map(({ char, index }) => {
+              const typedState = typedStates[index];
+              const current = index === currentIndex;
+              const space = char === " ";
+              const wrong = lastWrongIndex === index;
 
-          return (
-            <span
-              className={[
-                "char",
-                space ? "char-space" : "",
-                current ? "char-current" : "",
-                typedState === "correct" ? "char-completed correct" : "",
-                typedState === "error" || wrong ? "char-error error" : ""
-              ]
-                .filter(Boolean)
-                .join(" ")}
-              key={`${char}-${index}`}
-              ref={(node) => {
-                charRefs.current[index] = node;
-              }}
-            >
-              {space ? "\u00A0" : char}
-            </span>
-          );
-        })}
+              return (
+                <span
+                  className={[
+                    "char",
+                    space ? "char-space" : "",
+                    current ? "char-current" : "",
+                    typedState === "correct" ? "char-completed correct" : "",
+                    typedState === "error" || wrong ? "char-error error" : ""
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                  key={`${char}-${index}`}
+                  ref={(node) => {
+                    charRefs.current[index] = node;
+                  }}
+                >
+                  {space ? "\u00A0" : char}
+                </span>
+              );
+            })}
+          </span>
+        ))}
       </p>
       <span
-        key={`${currentIndex}-${lastWrongIndex ?? "steady"}`}
         className={[
           "typing-caret",
-          caret.moving ? "is-moving" : "",
-          caret.lineJump ? "is-line-jump" : "",
           lastWrongIndex === currentIndex ? "is-error" : ""
         ]
           .filter(Boolean)

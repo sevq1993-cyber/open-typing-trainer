@@ -1,4 +1,4 @@
-import { ChevronRight, Eye, Keyboard } from "lucide-react";
+import { Keyboard } from "lucide-react";
 import { dashboardData } from "../../data/dashboard";
 import { Card } from "../ui/Card";
 import { Metric } from "../ui/Metric";
@@ -14,7 +14,7 @@ export function LastSessionCard() {
 
       <div className="last-session-content">
         <span className="keyboard-summary-icon" aria-hidden="true">
-          <Keyboard size={30} />
+          <Keyboard size={26} />
         </span>
 
         <div className="last-metrics" aria-label="Результаты последней сессии">
@@ -39,12 +39,6 @@ export function LastSessionCard() {
             ))}
           </div>
         </section>
-
-        <a className="eye-analysis-button interactive" href="/eye-tracking" aria-label="Открыть анализ взгляда">
-          <Eye size={24} aria-hidden="true" />
-          <span>Анализ взгляда</span>
-          <ChevronRight size={18} aria-hidden="true" />
-        </a>
       </div>
     </Card>
   );

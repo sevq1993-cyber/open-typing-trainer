@@ -1,7 +1,6 @@
 import type { LucideIcon } from "lucide-react";
 import {
   BarChart3,
-  Eye,
   GraduationCap,
   Home,
   Keyboard,
@@ -15,10 +14,10 @@ export const routes = {
   home: "/",
   lessons: "/lessons",
   activeLesson: "/lessons/7",
+  lesson: (id: number) => `/lessons/${id}`,
   statistics: "/statistics",
   mistakes: "/mistakes",
   sounds: "/sounds",
-  eyeTracking: "/eye-tracking",
   settings: "/settings"
 } as const;
 
@@ -26,7 +25,7 @@ export type NavItemData = {
   label: string;
   href: string;
   icon: LucideIcon;
-  id: "home" | "lessons" | "statistics" | "mistakes" | "sounds" | "eyeTracking" | "settings";
+  id: "home" | "lessons" | "statistics" | "mistakes" | "sounds" | "settings";
   mobileHidden?: boolean;
 };
 
@@ -36,7 +35,6 @@ export const navItems: NavItemData[] = [
   { id: "statistics", label: "Статистика", icon: BarChart3, href: routes.statistics },
   { id: "mistakes", label: "Анализ ошибок", icon: Target, href: routes.mistakes, mobileHidden: true },
   { id: "sounds", label: "Звуки клавиатуры", icon: Keyboard, href: routes.sounds, mobileHidden: true },
-  { id: "eyeTracking", label: "Взгляд", icon: Eye, href: routes.eyeTracking },
   { id: "settings", label: "Настройки", icon: Settings, href: routes.settings }
 ];
 
@@ -58,15 +56,15 @@ export const dashboardData = {
 
   currentLesson: {
     lessonNumber: 7,
-    title: "Основной ряд: Н – Р",
+    title: "Верхний ряд: К Е",
     progress: 75,
-    focusKey: "Н"
+    focusKey: "К"
   },
 
   quickStart: [
     {
       title: "Продолжить обучение",
-      description: "Урок 7. Основной ряд: Н – Р",
+      description: "Урок 7. Верхний ряд: К Е",
       type: "lesson" as QuickStartType
     },
     {

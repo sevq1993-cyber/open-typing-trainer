@@ -14,7 +14,7 @@ export function MetricItem({ icon: Icon, label, tone = "purple", unit, value }: 
     <div className="metric-item">
       {Icon ? (
         <span className={`metric-item-icon metric-item-icon-${tone}`} aria-hidden="true">
-          <Icon size={22} />
+          <Icon size={19} />
         </span>
       ) : null}
       <span className="metric-item-copy">

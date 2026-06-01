@@ -3,6 +3,7 @@ import { useState } from "react";
 import { HeaderActions } from "../layout/HeaderActions";
 import { Button } from "../ui/Button";
 import { routes } from "../../data/dashboard";
+import { lessons, resumeLesson } from "../../data/lessons";
 import { CourseSummary } from "./CourseSummary";
 import { LessonList } from "./LessonList";
 import { LessonPreview } from "./LessonPreview";
@@ -14,6 +15,8 @@ type LessonsPageProps = {
 
 export function LessonsPage({ onNavigate }: LessonsPageProps) {
   const [activeTab, setActiveTab] = useState<LessonsTab>("course");
+  const [previewLessonId, setPreviewLessonId] = useState(resumeLesson.id);
+  const previewLesson = lessons.find((lesson) => lesson.id === previewLessonId) ?? lessons[0];
 
   return (
     <section className="page page-lessons" aria-labelledby="lessons-title">
@@ -26,8 +29,8 @@ export function LessonsPage({ onNavigate }: LessonsPageProps) {
           <Button
             variant="secondary"
             className="continue-lesson-button"
-            icon={<Play size={18} aria-hidden="true" />}
-            onClick={() => onNavigate(routes.activeLesson)}
+            icon={<Play size={15} aria-hidden="true" />}
+            onClick={() => onNavigate(routes.lesson(resumeLesson.id))}
           >
             Продолжить урок
           </Button>
@@ -38,15 +41,18 @@ export function LessonsPage({ onNavigate }: LessonsPageProps) {
         <>
           <CourseSummary />
           <div className="lessons-grid">
-            <LessonList onContinue={() => onNavigate(routes.activeLesson)} />
-            <LessonPreview onStart={() => onNavigate(routes.activeLesson)} />
+            <LessonList
+              onSelectLesson={setPreviewLessonId}
+              onStartLesson={(lessonId) => onNavigate(routes.lesson(lessonId))}
+            />
+            <LessonPreview lesson={previewLesson} onStart={() => onNavigate(routes.lesson(previewLesson.id))} />
           </div>
         </>
       ) : (
         <section className="card lessons-empty-state">
           <h2>{activeTab === "practice" ? "Практика" : "Свой текст"}</h2>
           <p>
-            Этот режим будет следующим шагом. Сейчас курс сфокусирован на первом уроке и
+            Этот режим будет следующим шагом. Сейчас курс сфокусирован на базовом маршруте и
             русской раскладке.
           </p>
         </section>

@@ -22,7 +22,7 @@ export function CurrentLessonCard() {
         </div>
 
         <button className="lesson-button interactive" type="button">
-          <Play size={18} aria-hidden="true" />
+          <Play size={15} aria-hidden="true" />
           Продолжить
         </button>
       </div>

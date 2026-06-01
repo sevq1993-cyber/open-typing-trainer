@@ -9,7 +9,7 @@ type IconBadgeProps = {
 export function IconBadge({ icon: Icon, tone = "purple", className = "" }: IconBadgeProps) {
   return (
     <span className={`icon-badge icon-badge-${tone} ${className}`.trim()} aria-hidden="true">
-      <Icon size={22} />
+      <Icon size={19} />
     </span>
   );
 }
