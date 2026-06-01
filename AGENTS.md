@@ -1,8 +1,9 @@
 # AGENTS.md
 
 ## Purpose
-- This repo is a Vite + React + TypeScript prototype for a Russian-language touch typing trainer, intended to evolve toward a macOS-like desktop app.
-- The product language is Russian. Typing speed MUST be shown as `зн/мин`, never WPM.
+- This repo is a Vite + React + TypeScript prototype for Open Typing Trainer, an international touch typing trainer intended to evolve toward a macOS-like desktop app.
+- The current seed lesson pack uses Russian UI, Cyrillic keyboard labels, and Russian exercise text. Treat that as initial content, not the product identity.
+- Typing speed MUST be shown as `зн/мин` in the current seed pack, never WPM.
 
 ## Tooling
 - Install dependencies with `npm install`.
@@ -15,7 +16,7 @@
 - Optimize primarily for desktop/macOS window layouts. Small viewports should not break, but mobile is fallback-only unless the user explicitly changes the product target.
 - Do not use global app-level visual scaling such as `.app-shell { transform: scale(...) }` as the primary way to tune product density; change real CSS/layout dimensions and component tokens instead.
 - Keep routes simple unless there is a clear need for a router dependency. Current routes are `/`, `/lessons`, and dynamic lesson routes such as `/lessons/7` and `/lessons/12`.
-- Use Russian lesson data, Cyrillic keyboard labels, and Russian exercise text for core training surfaces.
+- Use the current Russian lesson data, Cyrillic keyboard labels, and Russian exercise text for core training surfaces until additional language packs are introduced.
 - Preserve the current trainer virtual keyboard as the Aceternity/shadcn-style keyboard component with Russian key labels, custom sound sprite, light body, and large desktop scale unless the user explicitly asks to replace it.
 - The trainer hints toggle MUST control persistent keyboard hints. When hints are off, do not show persistent target/current-key highlighting or target-key mini-preview hints; transient pressed-key feedback may still appear while typing.
 

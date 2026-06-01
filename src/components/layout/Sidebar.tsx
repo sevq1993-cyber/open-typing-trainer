@@ -19,7 +19,7 @@ export function Sidebar({ activeRoute, onNavigate }: SidebarProps) {
       <a
         className="brand"
         href="/"
-        aria-label="Слепая Печать, главная"
+        aria-label="Open Typing Trainer, главная"
         onClick={(event) => {
           event.preventDefault();
           onNavigate("/");
@@ -30,10 +30,10 @@ export function Sidebar({ activeRoute, onNavigate }: SidebarProps) {
         </span>
         <span className="brand-text">
           <span className="brand-row">
-            <span className="brand-name">Слепая Печать</span>
+            <span className="brand-name">Open Typing Trainer</span>
             <span className="plan-badge">PRO</span>
           </span>
-          <span className="brand-subtitle">Русская раскладка</span>
+          <span className="brand-subtitle">Первый языковой пакет</span>
         </span>
       </a>
 
@@ -54,7 +54,7 @@ export function Sidebar({ activeRoute, onNavigate }: SidebarProps) {
         <div className="pro-icon" aria-hidden="true">
           <Crown size={19} />
         </div>
-        <h2 id="pro-card-title">Слепая Печать PRO</h2>
+        <h2 id="pro-card-title">Open Typing Trainer PRO</h2>
         <p>Поддержите развитие приложения и получите доступ к эксклюзивным возможностям.</p>
         <button className="primary-button interactive" type="button">
           Перейти на PRO

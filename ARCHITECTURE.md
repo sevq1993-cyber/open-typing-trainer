@@ -2,13 +2,13 @@
 
 ## Purpose
 
-Durable architecture map for the Russian-language touch typing trainer prototype. Use this file for repository structure, runtime flows, content/data ownership, project invariants, and verification entrypoints.
+Durable architecture map for Open Typing Trainer, an international touch typing trainer prototype. Use this file for repository structure, runtime flows, content/data ownership, project invariants, and verification entrypoints.
 
 ## System Snapshot
 
 | Area | Value | Evidence |
 |---|---|---|
-| Product | Russian touch typing trainer prototype aimed at a macOS-like desktop app | `AGENTS.md`, `src/app/App.tsx` |
+| Product | International touch typing trainer prototype aimed at a macOS-like desktop app, currently seeded with Russian lessons | `AGENTS.md`, `src/app/App.tsx` |
 | Stack | Vite + React + TypeScript | `package.json`, `vite.config.ts`, `tsconfig.app.json` |
 | Styling | Global CSS plus Tailwind utility classes used by the keyboard component | `src/styles/globals.css`, `src/components/ui/keyboard.tsx`, `vite.config.ts` |
 | Routing | In-app browser history routing without a router dependency | `src/app/App.tsx` |
@@ -115,7 +115,7 @@ Persistent target/current-key hints are controlled by the trainer hints toggle. 
 
 ## Invariants And Gotchas
 
-- Product language is Russian; speed is `зн/мин`, never WPM.
+- Current seed pack language is Russian; speed is `зн/мин`, never WPM.
 - Desktop/macOS-like windows are the primary target; mobile is defensive fallback.
 - Do not use a global `.app-shell { transform: scale(...) }` to tune density. Change real CSS/layout dimensions.
 - Preserve the current Aceternity/shadcn-style trainer keyboard unless the user explicitly requests replacement.
