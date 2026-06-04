@@ -23,6 +23,13 @@ Open Typing Trainer is an international open-source foundation for touch typing 
 - Include practical exercises for modern workflows such as chat-based tools, developer consoles, and structured text editing.
 - Support mixed natural-language and technical typing drills without making the product developer-only.
 
+## Gaze Discipline Training
+
+- Build camera-assisted detection for moments when a learner looks down at the keyboard instead of keeping attention on the screen.
+- Surface gaze discipline as part of lesson feedback so learners can understand when they are relying on visual key search.
+- Keep this feature privacy-first: explicit consent, visible camera state, local processing where feasible, no video recording by default, and clear classroom/child-safety boundaries.
+- Treat gaze feedback as coaching, not punishment or surveillance.
+
 ## Product Direction
 
 - Evolve toward a polished macOS-like desktop app experience while keeping the web foundation open and portable.

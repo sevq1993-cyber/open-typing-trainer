@@ -82,6 +82,7 @@ Planned features and research areas:
 - Progress storage: optional local progress tracking without requiring an account.
 - Accessibility improvements: better keyboard navigation, reduced-motion modes, screen reader checks, and high-contrast themes.
 - Better typing analytics: accuracy, rhythm, difficult keys, and practice recommendations without turning the app into a distracting dashboard.
+- Gaze discipline training: camera-assisted feedback that detects when a learner looks down at the keyboard during practice, with clear consent, privacy-first local processing goals, and no video recording by default.
 - Desktop packaging: evolve the web prototype toward a macOS-like desktop app experience.
 
 See [ROADMAP.md](ROADMAP.md) for a clearer open-source development path.
@@ -100,6 +101,12 @@ A future track of this project should teach practical command input for AI-assis
 - How to practice common developer patterns: file names, CLI commands, JSON, Markdown, Git commands, and code snippets.
 
 The ambition is to help students move from basic keyboard confidence to practical computer fluency: typing text, controlling software, writing prompts, and eventually working with code and AI agents.
+
+## Gaze Discipline Training
+
+Touch typing requires keeping attention on the screen instead of searching for keys visually. A future core research track is camera-assisted gaze discipline: the trainer should detect when a learner looks down at the keyboard during an exercise and reflect that behavior in the lesson feedback.
+
+This feature should be built carefully because it can involve children, classrooms, cameras, and sensitive signals. The product direction is to make the training capability real, while keeping the implementation privacy-first: explicit consent, visible camera state, local processing where possible, no video recording by default, and feedback that helps the learner improve rather than creating surveillance pressure.
 
 ## Why Codex For OSS Matters Here
 

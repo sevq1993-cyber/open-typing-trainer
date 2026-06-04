@@ -111,3 +111,18 @@ Acceptance criteria:
 - Verify `npm run build` produces a deployable static output.
 - Document any environment assumptions or required settings.
 - Do not deploy from the issue work unless maintainers explicitly approve it.
+
+## 9. Build gaze discipline detection for touch typing
+
+Labels: `enhancement`, `research`, `privacy`, `trainer`, `codex-ready`
+
+Body:
+Touch typing depends on keeping attention on the screen instead of looking down at the keyboard. Build a first privacy-first implementation of gaze discipline detection that can identify when a learner looks down during an active lesson and include that signal in training feedback.
+
+Acceptance criteria:
+- Define the first technical approach for camera-assisted gaze/downward-look detection.
+- Require explicit consent and a visible camera-active state before any camera access.
+- Process signals locally where feasible and do not record or upload video by default.
+- Show gentle lesson feedback when the learner repeatedly looks down at the keyboard.
+- Add safeguards and documentation for children, schools, and classroom use.
+- Keep the first implementation focused on active lesson routes; do not add unrelated analytics dashboards.
