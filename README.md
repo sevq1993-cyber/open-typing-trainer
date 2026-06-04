@@ -4,6 +4,18 @@ Open Typing Trainer is an open-source foundation for teaching fast, confident co
 
 Typing is becoming a basic literacy skill for the AI era. Children who can express thoughts quickly on a keyboard can learn programming, work with AI assistants, write prompts, operate developer tools, and communicate with computers with less friction. This project exists to make that foundation accessible without requiring proprietary software, paid subscriptions, or language-specific commercial platforms.
 
+## Mission
+
+Make touch typing education free, localizable, and practical for every language community.
+
+Open Typing Trainer should let a school, teacher, parent, local developer, or language community create a high-quality typing trainer without starting from scratch or depending on a closed paid platform.
+
+## Current Status
+
+This repository is an early Vite + React + TypeScript prototype. The current seed lesson pack uses Russian UI, Cyrillic keyboard labels, and Russian exercise text. That first pack proves the training flow, but it is not the product identity.
+
+The intended architecture is international: future language packs should be able to define their own lesson data, keyboard layout, fonts, sample texts, localized UI strings, and speed metrics.
+
 ## Why This Exists
 
 Many typing trainers are closed, paid, language-limited, or designed around English-first assumptions. That leaves a gap for communities that need local alphabets, local lesson texts, local keyboard layouts, and local teaching methods.
@@ -29,6 +41,14 @@ The prototype includes:
 - A virtual keyboard implementation with a polished Aceternity/shadcn-style visual system.
 - Character-per-minute speed metrics that fit non-word-based practice.
 - Local prototype behavior only: no backend, no accounts, no tracking, no paid features.
+
+## Screenshot
+
+![Open Typing Trainer home screen](docs/screenshots/home.png)
+
+## Live Demo
+
+A public demo is planned. For now, run the prototype locally with `npm run dev`.
 
 ## Open-Source Vision
 
@@ -64,6 +84,8 @@ Planned features and research areas:
 - Better typing analytics: accuracy, rhythm, difficult keys, and practice recommendations without turning the app into a distracting dashboard.
 - Desktop packaging: evolve the web prototype toward a macOS-like desktop app experience.
 
+See [ROADMAP.md](ROADMAP.md) for a clearer open-source development path.
+
 ## Codex And AI-Era Lessons
 
 Typing speed is not only about writing documents. It is becoming part of how people work with AI systems and developer tools.
@@ -78,6 +100,19 @@ A future track of this project should teach practical command input for AI-assis
 - How to practice common developer patterns: file names, CLI commands, JSON, Markdown, Git commands, and code snippets.
 
 The ambition is to help students move from basic keyboard confidence to practical computer fluency: typing text, controlling software, writing prompts, and eventually working with code and AI agents.
+
+## Why Codex For OSS Matters Here
+
+Codex can help maintain this project in ways that directly match the open-source mission:
+
+- Review and improve multilingual lesson packs.
+- Generate first drafts of localized exercises for new scripts.
+- Check keyboard-layout data for consistency.
+- Improve documentation for teachers and contributors.
+- Triage issues and review pull requests.
+- Prototype AI-era typing lessons for prompts, slash commands, terminal commands, Markdown, JSON, Git, and code snippets.
+
+The goal is not to replace educators or language communities. The goal is to reduce the maintenance burden so more communities can adapt the trainer to their own language.
 
 ## Repository Structure
 
@@ -123,6 +158,8 @@ npm run preview
 
 ## Contributing
 
+Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
+
 Useful contributions include:
 
 - New lesson packs for other languages.
@@ -142,4 +179,4 @@ Before contributing, keep the product principles in mind:
 
 ## License
 
-This repository is intended to be open source. A final license file still needs to be selected before reuse terms are formally defined.
+Open Typing Trainer is released under the [MIT License](LICENSE).
