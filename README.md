@@ -4,6 +4,8 @@ Open Typing Trainer is an open-source foundation for teaching fast, confident co
 
 Typing is becoming a basic literacy skill for the AI era. Children who can express thoughts quickly on a keyboard can learn programming, work with AI assistants, write prompts, operate developer tools, and communicate with computers with less friction. This project exists to make that foundation accessible without requiring proprietary software, paid subscriptions, or language-specific commercial platforms.
 
+Built from Armenia by [AICoding.am](https://aicoding.am).
+
 ## Mission
 
 Make touch typing education free, localizable, and practical for every language community.
