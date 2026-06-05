@@ -406,6 +406,20 @@ svg {
   color: var(--text-muted);
 }
 
+.aicoding-link {
+  display: block;
+  margin-top: 9px;
+  color: var(--purple-strong);
+  font-size: 11px;
+  font-weight: 750;
+  text-align: center;
+}
+
+.aicoding-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .app-version {
   margin-top: 10px;
   color: var(--text-soft);
@@ -1139,6 +1153,7 @@ svg {
   .pro-card,
   .github-label,
   .github-external,
+  .aicoding-link,
   .app-version {
     display: none;
   }
@@ -1244,6 +1259,7 @@ svg {
   .sidebar-spacer,
   .pro-card,
   .github-link,
+  .aicoding-link,
   .app-version,
   .nav-item[data-mobile-hidden="true"] {
     display: none;

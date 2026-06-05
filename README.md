@@ -6,11 +6,21 @@ Typing is becoming a basic literacy skill for the AI era. Children who can expre
 
 Built from Armenia by [AICoding.am](https://aicoding.am).
 
+Links:
+
+- Website: [AICoding.am](https://aicoding.am)
+- Repository: [github.com/sevq1993-cyber/open-typing-trainer](https://github.com/sevq1993-cyber/open-typing-trainer)
+- Roadmap: [ROADMAP.md](ROADMAP.md)
+
 ## Mission
 
 Make touch typing education free, localizable, and practical for every language community.
 
 Open Typing Trainer should let a school, teacher, parent, local developer, or language community create a high-quality typing trainer without starting from scratch or depending on a closed paid platform.
+
+## About AICoding.am
+
+[AICoding.am](https://aicoding.am) is building open, practical AI and coding tools from Armenia. Open Typing Trainer is part of that mission: help local communities, schools, and children build computer fluency in their own language while keeping the software free, inspectable, and easy to adapt.
 
 ## Current Status
 

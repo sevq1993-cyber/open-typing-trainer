@@ -61,12 +61,28 @@ export function Sidebar({ activeRoute, onNavigate }: SidebarProps) {
         </button>
       </section>
 
-      <a className="github-link interactive" href="#github" aria-label="Открыть GitHub проекта">
+      <a
+        className="github-link interactive"
+        href="https://github.com/sevq1993-cyber/open-typing-trainer"
+        target="_blank"
+        rel="noreferrer"
+        aria-label="Открыть GitHub проекта"
+      >
         <span>
           <Github size={18} aria-hidden="true" />
           <span className="github-label">GitHub</span>
         </span>
         <ExternalLink className="github-external" size={14} aria-hidden="true" />
+      </a>
+
+      <a
+        className="aicoding-link interactive"
+        href="https://aicoding.am"
+        target="_blank"
+        rel="noreferrer"
+        aria-label="Открыть сайт AICoding.am"
+      >
+        Built by AICoding.am
       </a>
 
       <span className="app-version">v0.1 prototype</span>

@@ -2,6 +2,25 @@
   "name": "open-typing-trainer",
   "private": true,
   "version": "0.1.0",
+  "description": "Open-source typing trainer by AICoding.am for localized keyboard lessons in any language.",
+  "homepage": "https://aicoding.am",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sevq1993-cyber/open-typing-trainer.git"
+  },
+  "author": "AICoding.am",
+  "keywords": [
+    "aicoding.am",
+    "open-typing-trainer",
+    "typing-trainer",
+    "touch-typing",
+    "education",
+    "localization",
+    "keyboard-layouts",
+    "armenian-education",
+    "ai-literacy",
+    "codex"
+  ],
   "type": "module",
   "scripts": {
     "dev": "vite",
